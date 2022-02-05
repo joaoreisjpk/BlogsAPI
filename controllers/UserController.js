@@ -21,4 +21,12 @@ const getUsers = async (req, resp) => {
   return resp.status(code).json(response);
 };
 
-module.exports = { createUser, getUsers };
+const getUserId = async (req, resp) => {
+  const { authorization } = req.headers;
+
+  const { code, response } = await usersServices.getUserId(authorization);
+
+  return resp.status(code).json(response);
+};
+
+module.exports = { createUser, getUsers, getUserId };
