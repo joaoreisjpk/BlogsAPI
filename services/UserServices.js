@@ -17,7 +17,7 @@ const createUser = async ({ displayName, email, password, image }) => {
     } catch (err) {
       return { status: 409, response: { message: 'User already registered' } };
     }
-  
+
     const token = jwt.sign({ data: email }, secret, jwtConfig);
 
     return { status: 201, response: { token } };
@@ -26,4 +26,15 @@ const createUser = async ({ displayName, email, password, image }) => {
   }
 };
 
-module.exports = { createUser };
+const getUsers = async (token) => {
+  try {
+    Validate.Token(token);
+
+    const users = await Users.findAll();
+    return { code: 200, response: users };
+  } catch ({ message }) {
+    return { code: 401, response: { message } };
+  }
+};
+
+module.exports = { createUser, getUsers };
