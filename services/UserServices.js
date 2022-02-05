@@ -30,7 +30,17 @@ const getUsers = async (token) => {
   try {
     Validate.Token(token);
 
+    const { data } = jwt.verify(token, secret);
+    const user = await Users.findOne({
+      where: { email: data },
+      raw: true,
+    });
+    
+    console.log(data, user);
+    if (!user) throw Error('Experid or invalid token');
+
     const users = await Users.findAll();
+
     return { code: 200, response: users };
   } catch ({ message }) {
     return { code: 401, response: { message } };

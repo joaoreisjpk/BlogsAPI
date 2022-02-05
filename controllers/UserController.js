@@ -16,9 +16,7 @@ const createUser = async (req, resp) => {
 const getUsers = async (req, resp) => {
   const { authorization } = req.headers;
 
-  console.log(authorization);
-
-  const { code, response } = usersServices.getUsers(authorization);
+  const { code, response } = await usersServices.getUsers(authorization);
 
   return resp.status(code).json(response);
 };

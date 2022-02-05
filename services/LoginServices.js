@@ -11,7 +11,7 @@ const Login = async ({ email, password }) => {
     Validate.Password(password);
 
     const user = await Users.findOne({ where: { email }, raw: true });
-    console.log(user);
+
     if (!user) throw Error('Invalid fields');
 
     const token = jwt.sign({ data: email }, secret, jwtConfig);
