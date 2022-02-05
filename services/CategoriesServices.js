@@ -23,14 +23,5 @@ const createCategory = async (name) => {
     return { code: 401, response: { message } };
   }
 };
-/*
-const getSpecificUser = async (data) => {
-  const users = await Users.findOne({ where: { data } });
 
-  if (!users) {
-    return { code: 404, response: { message: 'User does not exist' } };
-  }
-
-  return { code: 200, response: users };
-}; */
 module.exports = { createCategory, getCategories };

@@ -6,7 +6,5 @@ const router = Router();
 
 router.post('/', userController.tokenValidation, categoriesController.createCategory);
 router.get('/', userController.tokenValidation, categoriesController.getCategories);
-/* router.get('/:id', userController.tokenValidation, userController.getUserId);
-router.get('/', userController.tokenValidation, userController.getUsers); */
 
 module.exports = router;
