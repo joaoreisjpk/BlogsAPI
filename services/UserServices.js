@@ -35,7 +35,7 @@ const getUsers = async (token) => {
       where: { email: data },
       raw: true,
     });
-    
+
     console.log(data, user);
     if (!user) throw Error('Experid or invalid token');
 
@@ -43,6 +43,9 @@ const getUsers = async (token) => {
 
     return { code: 200, response: users };
   } catch ({ message }) {
+    if (message === 'jwt malformed') {
+      return { code: 401, response: { message: 'Experid or invalid token' } };
+    }
     return { code: 401, response: { message } };
   }
 };

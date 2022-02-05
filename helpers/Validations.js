@@ -2,7 +2,7 @@ const nameError = '"displayName" length must be at least 8 characters long';
 const noEmail = '"email" is required';
 const blankEmail = '"email" is not allowed to be empty';
 const invalidEmail = '"email" must be a valid email';
-const invalidPassword = '"password" length must be at least 8 characters long';
+const invalidPassword = '"password" length must be 6 characters long';
 const noPassword = '"password" is required';
 const blankPassword = '"password" is not allowed to be empty';
 
@@ -21,7 +21,7 @@ const Email = (email) => {
 const Password = (password) => {
   if (!password && password !== '') throw Error(noPassword);
   if (!password) throw Error(blankPassword);
-  if (password.length < 6) throw Error(invalidPassword);
+  if (password.length !== 6) throw Error(invalidPassword);
 };
 
 const Token = (token) => {
