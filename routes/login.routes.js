@@ -3,4 +3,4 @@ const loginController = require('../controllers/LoginController');
 
 const router = Router();
 
-router.post('/', loginController.login);
+router.post('/', loginController.Login);
