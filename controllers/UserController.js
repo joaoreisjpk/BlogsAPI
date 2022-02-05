@@ -13,4 +13,14 @@ const createUser = async (req, resp) => {
   return resp.status(status).json(response);
 };
 
-module.exports = { createUser };
+const getUsers = async (req, resp) => {
+  const { authorization } = req.headers;
+
+  console.log(authorization);
+
+  const { code, response } = usersServices.getUsers(authorization);
+
+  return resp.status(code).json(response);
+};
+
+module.exports = { createUser, getUsers };
