@@ -4,6 +4,7 @@ const { Users } = require('../models');
 const Validate = require('../helpers/Validations');
 
 const secret = process.env.JWT_SECRET;
+
 const jwtConfig = { expiresIn: '1d', algorithm: 'HS256' };
 
 const createUser = async ({ displayName, email, password, image }) => {
@@ -26,52 +27,32 @@ const createUser = async ({ displayName, email, password, image }) => {
   }
 };
 
-const getUsers = async (token) => {
+const getUsers = async () => {
   try {
-    Validate.Token(token);
-
-    const { data } = jwt.verify(token, secret);
-    const user = await Users.findOne({
-      where: { email: data },
-      raw: true,
-    });
-
-    if (!user) throw Error('Experid or invalid token');
-
     const users = await Users.findAll();
-
     return { code: 200, response: users };
   } catch ({ message }) {
-    if (message === 'jwt malformed') {
-      return { code: 401, response: { message: 'Experid or invalid token' } };
-    }
     return { code: 401, response: { message } };
   }
 };
 
-const getUserId = async (token, id) => {
-  try {
-    Validate.Token(token);
+const getSpecificUser = async (data) => {
+  const users = await Users.findOne({ where: { data } });
 
-    const { data } = jwt.verify(token, secret);
-    const user = await Users.findOne({
-      where: { email: data },
-      raw: true,
-    });
-
-    console.log(data, user);
-    if (!user) throw Error('Experid or invalid token');
-
-    const users = await Users.findOne({ where: { id } });
-    if (!users) return { code: 404, response: { message: 'User does not exist' } };
-    
-    return { code: 200, response: users };
-  } catch ({ message }) {
-    if (message === 'jwt malformed') {
-      return { code: 401, response: { message: 'Experid or invalid token' } };
-    }
-    return { code: 401, response: { message } };
+  if (!users) {
+    return { code: 404, response: { message: 'User does not exist' } };
   }
+
+  return { code: 200, response: users };
 };
 
-module.exports = { createUser, getUsers, getUserId };
+const Token = async (token) => {
+  if (!token) return { code: 401, response: { message: 'Token not found' } };
+
+  const { data } = jwt.verify(token, secret);
+  const user = await getSpecificUser(data);
+
+  if (user.code !== 200) return { code: 401, response: { message: 'Experid or invalid token' } };
+};
+
+module.exports = { createUser, getUsers, getSpecificUser, Token };

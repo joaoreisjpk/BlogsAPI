@@ -24,8 +24,4 @@ const Password = (password) => {
   if (password.length !== 6) throw Error(invalidPassword);
 };
 
-const Token = (token) => {
-  if (!token) throw Error('Token not found');
-};
-
-module.exports = { DisplayName, Email, Password, Token };
+module.exports = { DisplayName, Email, Password };
