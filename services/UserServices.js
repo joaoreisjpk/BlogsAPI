@@ -36,7 +36,6 @@ const getUsers = async (token) => {
       raw: true,
     });
 
-    console.log(data, user);
     if (!user) throw Error('Experid or invalid token');
 
     const users = await Users.findAll();
@@ -50,4 +49,29 @@ const getUsers = async (token) => {
   }
 };
 
-module.exports = { createUser, getUsers };
+const getUserId = async (token, id) => {
+  try {
+    Validate.Token(token);
+
+    const { data } = jwt.verify(token, secret);
+    const user = await Users.findOne({
+      where: { email: data },
+      raw: true,
+    });
+
+    console.log(data, user);
+    if (!user) throw Error('Experid or invalid token');
+
+    const users = await Users.findOne({ where: { id } });
+    if (!users) return { code: 404, response: { message: 'User does not exist' } };
+    
+    return { code: 200, response: users };
+  } catch ({ message }) {
+    if (message === 'jwt malformed') {
+      return { code: 401, response: { message: 'Experid or invalid token' } };
+    }
+    return { code: 401, response: { message } };
+  }
+};
+
+module.exports = { createUser, getUsers, getUserId };

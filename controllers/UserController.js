@@ -23,8 +23,9 @@ const getUsers = async (req, resp) => {
 
 const getUserId = async (req, resp) => {
   const { authorization } = req.headers;
+  const { id } = req.params;
 
-  const { code, response } = await usersServices.getUserId(authorization);
+  const { code, response } = await usersServices.getUserId(authorization, id);
 
   return resp.status(code).json(response);
 };
