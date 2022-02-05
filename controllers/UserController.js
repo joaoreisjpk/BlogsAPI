@@ -6,13 +6,13 @@ const tokenValidation = async (req, res, next) => {
   const { authorization } = req.headers;
 
   try {
-    const isNotValid = await usersServices.Token(authorization);
+    const isNotValid = await usersServices.tokenValidation(authorization);
 
-    if (!isNotValid) return res.status(isNotValid.code).json(isNotValid.response);
+    if (isNotValid) return res.status(isNotValid.code).json(isNotValid.response);
     
     next();
   } catch (err) {
-    return res.status(401).json({ message: 'Expirid or invalid token' });
+    return res.status(401).json({ message: err.message });
   }
 };
 
@@ -36,10 +36,9 @@ const getUsers = async (req, resp) => {
 };
 
 const getUserId = async (req, resp) => {
-  const { authorization } = req.headers;
   const { id } = req.params;
 
-  const { code, response } = await usersServices.getUserId(authorization, id);
+  const { code, response } = await usersServices.getUserId({ id });
 
   return resp.status(code).json(response);
 };

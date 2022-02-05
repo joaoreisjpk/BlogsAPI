@@ -37,8 +37,7 @@ const getUsers = async () => {
 };
 
 const getSpecificUser = async (data) => {
-  const users = await Users.findOne({ where: { data } });
-
+  const users = await Users.findOne({ where: data, raw: true });
   if (!users) {
     return { code: 404, response: { message: 'User does not exist' } };
   }
@@ -46,13 +45,14 @@ const getSpecificUser = async (data) => {
   return { code: 200, response: users };
 };
 
-const Token = async (token) => {
+const tokenValidation = async (token) => {
   if (!token) return { code: 401, response: { message: 'Token not found' } };
 
   const { data } = jwt.verify(token, secret);
-  const user = await getSpecificUser(data);
+  
+  const user = await getSpecificUser({ email: data });
 
   if (user.code !== 200) return { code: 401, response: { message: 'Expirid or invalid token' } };
 };
 
-module.exports = { createUser, getUsers, getSpecificUser, Token };
+module.exports = { createUser, getUsers, getSpecificUser, tokenValidation };

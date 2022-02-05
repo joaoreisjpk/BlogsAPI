@@ -1,9 +1,10 @@
 const { Router } = require('express');
-const userController = require('../controllers/CategoriesController');
+const categoriesController = require('../controllers/CategoriesController');
+const userController = require('../controllers/UserController');
 
 const router = Router();
 
-router.post('/', userController.tokenValidation, userController.createCategory);
+router.post('/', userController.tokenValidation, categoriesController.createCategory);
 /* router.get('/:id', userController.tokenValidation, userController.getUserId);
 router.get('/', userController.tokenValidation, userController.getUsers); */
 
