@@ -15,7 +15,6 @@ const createPost = async ({ title, content, categoryIds }) => {
     return { status: 400, response: { message } };
   }
 };
-
 /* const getUsers = async () => {
   try {
     const users = await Users.findAll();
