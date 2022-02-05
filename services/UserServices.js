@@ -52,7 +52,7 @@ const Token = async (token) => {
   const { data } = jwt.verify(token, secret);
   const user = await getSpecificUser(data);
 
-  if (user.code !== 200) return { code: 401, response: { message: 'Experid or invalid token' } };
+  if (user.code !== 200) return { code: 401, response: { message: 'Expirid or invalid token' } };
 };
 
 module.exports = { createUser, getUsers, getSpecificUser, Token };
