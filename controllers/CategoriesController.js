@@ -10,11 +10,13 @@ const createCategory = async (req, resp) => {
   return resp.status(status).json(response);
 };
 
-/* const getUsers = async (req, resp) => {
-  const { code, response } = await categoriesService.getUsers();
+const getCategories = async (req, resp) => {
+  const { code, response } = await categoriesService.getCategories();
 
   return resp.status(code).json(response);
 };
+
+/*
 
 const getUserId = async (req, resp) => {
   const { authorization } = req.headers;
@@ -25,4 +27,4 @@ const getUserId = async (req, resp) => {
   return resp.status(code).json(response);
 }; */
 
-module.exports = { createCategory };
+module.exports = { createCategory, getCategories };
