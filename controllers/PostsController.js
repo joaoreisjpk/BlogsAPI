@@ -15,19 +15,19 @@ const createPost = async (req, resp) => {
 
   return resp.status(status).json(response);
 };
-/* 
-const getUsers = async (req, resp) => {
-  const { code, response } = await usersServices.getUsers();
+
+const getPosts = async (req, resp) => {
+  const { code, response } = await postsServices.getPosts();
 
   return resp.status(code).json(response);
 };
 
-const getUserId = async (req, resp) => {
+const getPostId = async (req, resp) => {
   const { id } = req.params;
 
-  const { code, response } = await usersServices.getUserId({ id });
+  const { code, response } = await postsServices.getPostId({ id });
 
   return resp.status(code).json(response);
-}; */
+};
 
-module.exports = { createPost };
+module.exports = { createPost, getPosts, getPostId };
