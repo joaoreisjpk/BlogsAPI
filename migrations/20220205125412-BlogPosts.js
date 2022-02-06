@@ -2,7 +2,7 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    return queryInterface.createTable("BlogPosts", {
+    return queryInterface.createTable('BlogPosts', {
       id: {
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -17,13 +17,15 @@ module.exports = {
         type: Sequelize.TEXT,
         allowNull: false,
       },
-      published: {
+      createdAt: {
         type: Sequelize.DATE,
         allowNull: false,
+        field: 'published',
       },
-      updated: {
+      updatedAt: {
         type: Sequelize.DATE,
         allowNull: false,
+        field: 'updated',
       },
       userId: {
         type: Sequelize.INTEGER,
@@ -32,12 +34,12 @@ module.exports = {
         onDelete: 'CASCADE',
         references: {
           model: 'Users',
-          key: 'id'
-        }
-      }
+          key: 'id',
+        },
+      },
     });
   },
   down: async (queryInterface, _Sequelize) => {
-    return queryInterface.dropTable("BlogPosts");
-  }
+    return queryInterface.dropTable('BlogPosts');
+  },
 };

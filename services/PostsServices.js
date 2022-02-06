@@ -1,16 +1,19 @@
 require('dotenv').config();
+// const { Op } = require('sequelize');
 const { BlogPosts } = require('../models');
 const Validate = require('../helpers/Validations');
 
-const createPost = async ({ title, content, categoryIds }) => {
+const createPost = async ({ id: userId, title, content, categoryIds }) => {
   try {
     Validate.Title(title);
     Validate.Content(content);
-    Validate.CategoryIds(categoryIds);
+    await Validate.CategoryIds(categoryIds);
 
-    const post = await BlogPosts.create({ title, content, categoryIds });
+    const post = await BlogPosts.create({ userId, title, content, categoryIds });
 
-    return { status: 201, response: post.dataValues };
+    const data = { id: post.id, userId, title, content };
+
+    return { status: 201, response: data };
   } catch ({ message }) {
     return { status: 400, response: { message } };
   }

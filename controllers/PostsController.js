@@ -1,11 +1,13 @@
 require('dotenv').config();
 
-const usersServices = require('../services/UserServices');
+const postsServices = require('../services/PostsServices');
 
 const createPost = async (req, resp) => {
   const { title, content, categoryIds } = req.body;
+  const { id } = req.user;
 
-  const { status, response } = await usersServices.createUser({
+  const { status, response } = await postsServices.createPost({
+    id,
     title,
     content,
     categoryIds,

@@ -49,10 +49,12 @@ const tokenValidation = async (token) => {
   if (!token) return { code: 401, response: { message: 'Token not found' } };
 
   const { data } = jwt.verify(token, secret);
-  
-  const user = await getSpecificUser({ email: data });
 
-  if (user.code !== 200) return { code: 401, response: { message: 'Expirid or invalid token' } };
+  const user = await Users.findOne({ where: { email: data }, raw: true });
+
+  if (!user) { return { code: 401, response: { message: 'Expirid or invalid token' } }; }
+
+  return { user };
 };
 
 module.exports = { createUser, getUsers, getSpecificUser, tokenValidation };

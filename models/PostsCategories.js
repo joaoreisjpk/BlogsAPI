@@ -9,7 +9,7 @@ module.exports = (sequelize, _DataTypes) => {
       otherKey: 'postId',
       through: PostsCategories,
     });
-  
+    
     PostsCategories.belongsTo(models.BlogPosts, {
       as: 'blogposts',
       foreignKey: 'postsId',

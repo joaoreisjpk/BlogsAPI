@@ -8,11 +8,16 @@ const tokenValidation = async (req, res, next) => {
   try {
     const isNotValid = await usersServices.tokenValidation(authorization);
 
-    if (isNotValid) return res.status(isNotValid.code).json(isNotValid.response);
-    
+    if (isNotValid.code) { return res.status(isNotValid.code).json(isNotValid.response); }
+
+    req.user = isNotValid.user;
+
     next();
-  } catch (err) {
-    return res.status(401).json({ message: err.message });
+  } catch ({ message }) {
+    if (message === 'jwt malformed') {
+      return res.status(401).json({ message: 'Expired or invalid token' });
+    }
+    return res.status(401).json({ message });
   }
 };
 
@@ -38,7 +43,7 @@ const getUsers = async (req, resp) => {
 const getUserId = async (req, resp) => {
   const { id } = req.params;
 
-  const { code, response } = await usersServices.getUserId({ id });
+  const { code, response } = await usersServices.getSpecificUser({ id });
 
   return resp.status(code).json(response);
 };

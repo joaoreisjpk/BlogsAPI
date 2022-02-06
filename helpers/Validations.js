@@ -7,9 +7,11 @@ const noPassword = '"password" is required';
 const blankPassword = '"password" is not allowed to be empty';
 const noTitle = '"title" is required';
 const noContent = '"content" is required';
-const noCategoryIDs = '"categoryId" is required';
+const noCategoryIDs = '"categoryIds" is required';
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+const { Categories } = require('../models');
 
 const DisplayName = (name) => {
   if (!name || name.length < 8) throw Error(nameError);
@@ -35,8 +37,17 @@ const Content = (content) => {
   if (!content) throw Error(noContent);
 };
 
-const CategoryIds = (array) => {
-  if (!array) throw Error(noCategoryIDs);
+const CategoryIds = async (idsArray) => {
+  if (!idsArray) throw Error(noCategoryIDs);
+
+  const { count } = await Categories.findAndCountAll({
+    where: { id: idsArray },
+    raw: true,
+  });
+
+  if (count !== idsArray.length) {
+    throw Error('"categoryIds" not found');
+  }
 };
 
 module.exports = { DisplayName, Email, Password, Content, Title, CategoryIds };
