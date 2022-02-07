@@ -78,7 +78,10 @@ const getPostId = async ({ id }) => {
 
 const updatePost = async ({ id, title, content }) => {
   try {
-    await BlogPosts.update({ title, content }, { where: { id } });
+    const post = await BlogPosts.update({ title, content }, { where: { id } });
+
+    if (!post[0]) return { code: 404, response: { message: 'Post does not exist' } };
+    
     const { response } = await getPostId({ id });
     
     return { code: 200, response };
@@ -89,7 +92,10 @@ const updatePost = async ({ id, title, content }) => {
 
 const deletePost = async ({ id }) => {
   try {
-    await BlogPosts.destroy({ where: { id } });
+    const post = await BlogPosts.destroy({ where: { id } });
+    
+    console.log(post);
+    if (!post[0]) return { code: 404 };
     
     return { code: 204 };
   } catch ({ message }) {

@@ -42,7 +42,7 @@ const updatePost = async (req, resp) => {
 const deletePost = async (req, resp) => {
   const { id } = req.params;
 
-  const { code, response } = await postsServices.updatePost({ id });
+  const { code, response } = await postsServices.deletePost({ id });
 
   return resp.status(code).json(response);
 };
