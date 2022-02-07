@@ -76,4 +76,18 @@ const getPostId = async ({ id }) => {
   }
 };
 
-module.exports = { createPost, getPosts, getPostId };
+const updatePost = async ({ id }) => {
+  try {
+    const posts = await BlogPosts.findOne({
+      where: { id },
+      'query'
+    });
+    if (!posts) return { code: 404, response: { message: 'Post does not exist' } };
+    const response = handleResponse([posts]);
+    return { code: 200, response };
+  } catch ({ message }) {
+    return { code: 401, response: { message } };
+  }
+};
+
+module.exports = { createPost, getPosts, getPostId, updatePost };
