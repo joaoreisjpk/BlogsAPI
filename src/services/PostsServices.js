@@ -113,24 +113,24 @@ const deletePost = async ({ id, userId }) => {
   }
 };
 
-// eslint-disable-next-line max-lines-per-function
+const queryPostsIncludes = [
+  { model: Users, as: 'user', attributes: { exclude: ['password'] } },
+  {
+    model: PostsCategories,
+    as: 'categories',
+    attributes: { exclude: ['postId'] },
+    include: [{ model: Categories, as: 'categories' }],
+  }];
+
 const queryPosts = async (searchTerm) => {
   try {
-    console.log(searchTerm);
     const posts = await BlogPosts.findAll(
       { where: { [Op.or]: {
         title: { [Op.like]: `%${searchTerm}%` },
         content: { [Op.like]: `%${searchTerm}%` },
        } },
       attributes: ['id', 'title', 'content', 'userId', 'published', 'updated'],
-      include: [
-        { model: Users, as: 'user', attributes: { exclude: ['password'] } },
-        {
-          model: PostsCategories,
-          as: 'categories',
-          attributes: { exclude: ['postId'] },
-          include: [{ model: Categories, as: 'categories' }],
-        }],
+      include: queryPostsIncludes,
     },
 );
     const response = handleResponse(posts);
