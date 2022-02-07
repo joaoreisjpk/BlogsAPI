@@ -11,7 +11,7 @@ const noCategoryIDs = '"categoryIds" is required';
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-const { Categories } = require('../models');
+const { Categories } = require('../../models');
 
 const DisplayName = (name) => {
   if (!name || name.length < 8) throw Error(nameError);

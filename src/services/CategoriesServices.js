@@ -1,5 +1,5 @@
 require('dotenv').config();
-const { Categories } = require('../models');
+const { Categories } = require('../../models');
 
 const createCategory = async (name) => {
   if (!name) {

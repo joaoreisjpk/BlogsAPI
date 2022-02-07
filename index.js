@@ -1,8 +1,8 @@
 const express = require('express');
-const userRouter = require('./routes/user.routes');
-const loginRouter = require('./routes/login.routes');
-const categorieRouter = require('./routes/categories.routes');
-const postsRouter = require('./routes/posts.routes');
+const userRouter = require('./src/routes/user.routes');
+const loginRouter = require('./src/routes/login.routes');
+const categorieRouter = require('./src/routes/categories.routes');
+const postsRouter = require('./src/routes/posts.routes');
 require('dotenv/config');
 
 const app = express();

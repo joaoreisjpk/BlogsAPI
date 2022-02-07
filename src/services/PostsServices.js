@@ -1,6 +1,6 @@
 require('dotenv').config();
 // const { Op } = require('sequelize');
-const { BlogPosts, Users, PostsCategories } = require('../models');
+const { BlogPosts, Users, PostsCategories } = require('../../models');
 const Validate = require('../helpers/Validations');
 
 const createPost = async ({ id: userId, title, content, categoryIds }) => {
@@ -15,6 +15,10 @@ const createPost = async ({ id: userId, title, content, categoryIds }) => {
       content,
       categoryIds,
     });
+
+    await PostsCategories.bulkCreate(
+      categoryIds.map((categoryId) => ({ categoryId, postId: post.id })),
+    );
 
     const data = { id: post.id, userId, title, content };
 
