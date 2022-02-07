@@ -87,4 +87,13 @@ const updatePost = async ({ id, title, content }) => {
   }
 };
 
-module.exports = { createPost, getPosts, getPostId, updatePost };
+const deletePost = async ({ id }) => {
+  try {
+    await BlogPosts.destroy({ where: { id } });
+    
+    return { code: 204 };
+  } catch ({ message }) {
+    return { code: 401, response: { message } };
+  }
+};
+module.exports = { createPost, getPosts, getPostId, updatePost, deletePost };
