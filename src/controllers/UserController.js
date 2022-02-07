@@ -48,4 +48,12 @@ const getUserId = async (req, resp) => {
   return resp.status(code).json(response);
 };
 
-module.exports = { createUser, getUsers, getUserId, tokenValidation };
+const deletePost = async (req, resp) => {
+  const { id } = req.user;
+
+  const { code, response } = await usersServices.deleteUser({ id });
+
+  return resp.status(code).json(response);
+};
+
+module.exports = { createUser, getUsers, getUserId, tokenValidation, deletePost };
