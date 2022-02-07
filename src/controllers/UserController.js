@@ -48,7 +48,7 @@ const getUserId = async (req, resp) => {
   return resp.status(code).json(response);
 };
 
-const deletePost = async (req, resp) => {
+const deleteUser = async (req, resp) => {
   const { id } = req.user;
 
   const { code, response } = await usersServices.deleteUser({ id });
@@ -56,4 +56,4 @@ const deletePost = async (req, resp) => {
   return resp.status(code).json(response);
 };
 
-module.exports = { createUser, getUsers, getUserId, tokenValidation, deletePost };
+module.exports = { createUser, getUsers, getUserId, tokenValidation, deleteUser };
