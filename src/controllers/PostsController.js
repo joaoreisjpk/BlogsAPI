@@ -30,4 +30,12 @@ const getPostId = async (req, resp) => {
   return resp.status(code).json(response);
 };
 
-module.exports = { createPost, getPosts, getPostId };
+const updatePost = async (req, resp) => {
+  const { id } = req.params;
+
+  const { code, response } = await postsServices.updatePost({ id });
+
+  return resp.status(code).json(response);
+};
+
+module.exports = { createPost, getPosts, getPostId, updatePost };
