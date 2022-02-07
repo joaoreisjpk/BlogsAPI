@@ -66,12 +66,11 @@ const getPostId = async ({ id }) => {
           as: 'categories',
           attributes: { exclude: ['postId'] },
           include: [{ model: Categories, as: 'categories' }],
-        },
-      ],
+        }],
     });
+    if (!posts) return { code: 404, response: { message: 'Post does not exist' } };
     const response = handleResponse([posts]);
-
-    return { code: 200, response: response[0] };
+    return { code: 200, response };
   } catch ({ message }) {
     return { code: 401, response: { message } };
   }
