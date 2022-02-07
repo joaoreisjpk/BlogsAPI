@@ -82,13 +82,17 @@ const updatePost = async ({ id, title, content, categoryIds, userId }) => {
 
     if (response.message) return { code: 404, response: { message: response.message } };
 
-    await Validate.UpdateValidation({ id, categoryIds, title, content, userId });
-        
+    if (response.userId !== userId) {
+      return { code: 401, response: { message: 'Unauthorized user' } };
+    }
+
+    await Validate.UpdateValidation({ categoryIds, title, content });
+
     await BlogPosts.update({ title, content }, { where: { id } });
 
     return { code: 200, response: { title, content, userId, categories: response.categories } };
   } catch ({ message }) {
-    return { code: 401, response: { message } };
+    return { code: 400, response: { message } };
   }
 };
 
@@ -97,15 +101,12 @@ const deletePost = async ({ id, userId }) => {
     const { response } = await getPostId({ id });
 
     if (response.message) return { code: 404, response: { message: response.message } };
-
-    if (Number(id) !== userId) {
+    if (response.userId !== userId) {
       return { code: 401, response: { message: 'Unauthorized user' } };
     }
 
-    const post = await BlogPosts.destroy({ where: { id } });
-    
-    if (!post[0]) return { code: 404, response: { message: 'Post does not exist' } };
-    
+    await BlogPosts.destroy({ where: { id } });
+        
     return { code: 204 };
   } catch ({ message }) {
     return { code: 401, response: { message } };
