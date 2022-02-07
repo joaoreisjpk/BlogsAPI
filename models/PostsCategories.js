@@ -6,13 +6,13 @@ module.exports = (sequelize, DataTypes) => {
 
   PostsCategories.associate = (models) => {
     PostsCategories.belongsTo(models.Categories, {
-      as: 'posts',
+      as: 'categories',
       foreignKey: 'categoryId',
       otherKey: 'postId',
     });
 
     PostsCategories.belongsTo(models.BlogPosts, {
-      as: 'categories',
+      as: 'posts',
       foreignKey: 'postId',
       otherKey: 'categoryId',
     });
