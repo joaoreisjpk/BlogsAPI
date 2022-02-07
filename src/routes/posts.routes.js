@@ -1,27 +1,26 @@
 const { Router } = require('express');
-const postsController = require('../controllers/PostsController');
-const userController = require('../controllers/UserController');
+const {
+  createPost,
+  deletePost,
+  getPostId,
+  getPosts,
+  queryPosts,
+  updatePost,
+} = require('../controllers/PostsController');
+const { tokenValidation } = require('../controllers/UserController');
 
 const router = Router();
 
-router.post('/', userController.tokenValidation, postsController.createPost);
+router.post('/', tokenValidation, createPost);
 
-router.get(
-  '/search',
-  userController.tokenValidation,
-  postsController.queryPosts,
-);
+router.get('/search', tokenValidation, queryPosts);
 
-router.get('/:id', userController.tokenValidation, postsController.getPostId);
+router.get('/:id', tokenValidation, getPostId);
 
-router.get('/', userController.tokenValidation, postsController.getPosts);
+router.get('/', tokenValidation, getPosts);
 
-router.put('/:id', userController.tokenValidation, postsController.updatePost);
+router.put('/:id', tokenValidation, updatePost);
 
-router.delete(
-  '/:id',
-  userController.tokenValidation,
-  postsController.deletePost,
-);
+router.delete('/:id', tokenValidation, deletePost);
 
 module.exports = router;

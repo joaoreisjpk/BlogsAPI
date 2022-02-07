@@ -2,7 +2,7 @@ module.exports = (sequelize, DataTypes) => {
   const BlogPosts = sequelize.define('BlogPosts', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     title: DataTypes.STRING,
-    content: DataTypes.STRING,
+    content: DataTypes.STRING({ length: 10000 }),
     updatedAt: { type: DataTypes.DATE, field: 'updated' },    
     createdAt: { type: DataTypes.DATE, field: 'published' },
     userId: DataTypes.INTEGER,
@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
 
     BlogPosts.hasMany(models.PostsCategories, {
       foreignKey: 'postId',
-      as: 'categories',
+      as: 'postsCategories',
     });
   };
   return BlogPosts;
