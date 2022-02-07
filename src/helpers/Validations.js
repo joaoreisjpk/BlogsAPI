@@ -50,4 +50,10 @@ const CategoryIds = async (idsArray) => {
   }
 };
 
-module.exports = { DisplayName, Email, Password, Content, Title, CategoryIds };
+const UpdateValidation = async ({ categoryIds, title, content, id, userId }) => {
+  if (categoryIds) throw Error('Categories cannot be edited');
+  if (!title) throw Error('"title" is required');
+  if (!content) throw Error('"content" is required');
+  if (id !== userId) throw Error('Unauthorized user');
+};
+module.exports = { DisplayName, Email, Password, Content, Title, CategoryIds, UpdateValidation };

@@ -33,8 +33,9 @@ const getPostId = async (req, resp) => {
 const updatePost = async (req, resp) => {
   const { id } = req.params;
   const { title, content } = req.body;
+  const { id: userId } = req.user;
 
-  const { code, response } = await postsServices.updatePost({ id, title, content });
+  const { code, response } = await postsServices.updatePost({ id, title, content, userId });
 
   return resp.status(code).json(response);
 };

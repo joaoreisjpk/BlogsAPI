@@ -76,14 +76,16 @@ const getPostId = async ({ id }) => {
   }
 };
 
-const updatePost = async ({ id, title, content }) => {
+const updatePost = async ({ id, title, content, categoryIds, userId }) => {
   try {
+    const { response } = await getPostId({ id });
+
+    Validate.UpdateValidation({ id, categoryIds, title, content, userId });
+
     const post = await BlogPosts.update({ title, content }, { where: { id } });
 
     if (!post[0]) return { code: 404, response: { message: 'Post does not exist' } };
-    
-    const { response } = await getPostId({ id });
-    
+
     return { code: 200, response };
   } catch ({ message }) {
     return { code: 401, response: { message } };
