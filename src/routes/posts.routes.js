@@ -6,6 +6,12 @@ const router = Router();
 
 router.post('/', userController.tokenValidation, postsController.createPost);
 
+router.get(
+  '/search',
+  userController.tokenValidation,
+  postsController.queryPosts,
+);
+
 router.get('/:id', userController.tokenValidation, postsController.getPostId);
 
 router.get('/', userController.tokenValidation, postsController.getPosts);
@@ -14,12 +20,6 @@ router.put('/:id', userController.tokenValidation, postsController.updatePost);
 
 router.delete(
   '/:id',
-  userController.tokenValidation,
-  postsController.deletePost,
-);
-
-router.get(
-  '/search/q=:searchTerm',
   userController.tokenValidation,
   postsController.deletePost,
 );

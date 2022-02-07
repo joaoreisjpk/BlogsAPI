@@ -1,5 +1,5 @@
 require('dotenv').config();
-// const { Op } = require('sequelize');
+const { Op } = require('sequelize');
 const {
   BlogPosts,
   Users,
@@ -112,4 +112,31 @@ const deletePost = async ({ id, userId }) => {
     return { code: 401, response: { message } };
   }
 };
-module.exports = { createPost, getPosts, getPostId, updatePost, deletePost };
+
+// eslint-disable-next-line max-lines-per-function
+const queryPosts = async (searchTerm) => {
+  try {
+    console.log(searchTerm);
+    const posts = await BlogPosts.findAll(
+      { where: { [Op.or]: {
+        title: { [Op.like]: `%${searchTerm}%` },
+        content: { [Op.like]: `%${searchTerm}%` },
+       } },
+      attributes: ['id', 'title', 'content', 'userId', 'published', 'updated'],
+      include: [
+        { model: Users, as: 'user', attributes: { exclude: ['password'] } },
+        {
+          model: PostsCategories,
+          as: 'categories',
+          attributes: { exclude: ['postId'] },
+          include: [{ model: Categories, as: 'categories' }],
+        }],
+    },
+);
+    const response = handleResponse(posts);
+    return { code: 200, response };
+  } catch ({ message }) {
+    return { code: 401, response: { message } };
+  }
+};
+module.exports = { createPost, getPosts, getPostId, updatePost, deletePost, queryPosts };
