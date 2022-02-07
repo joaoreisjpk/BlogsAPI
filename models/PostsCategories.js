@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     });
 
     PostsCategories.belongsTo(models.BlogPosts, {
-      as: 'posts',
+      as: 'category',
       foreignKey: 'postId',
       otherKey: 'categoryId',
     });

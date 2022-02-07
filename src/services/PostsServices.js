@@ -6,6 +6,7 @@ const {
   PostsCategories,
   Categories,
 } = require('../../models');
+const { handleResponse } = require('../helpers');
 const Validate = require('../helpers/Validations');
 
 const createPost = async ({ id: userId, title, content, categoryIds }) => {
@@ -42,11 +43,13 @@ const getPosts = async () => {
           model: PostsCategories,
           as: 'categories',
           attributes: { exclude: ['postId'] },
+          include: [{ model: Categories, as: 'categories' }],
         },
       ],
     });
-    console.log(posts);
-    return { code: 200, response: posts };
+    const response = handleResponse(posts);
+
+    return { code: 200, response };
   } catch ({ message }) {
     return { code: 401, response: { message } };
   }
@@ -54,22 +57,19 @@ const getPosts = async () => {
 
 const getPostId = async ({ id }) => {
   try {
-    const post = await BlogPosts.findOne({
-      where: { id },
+    const posts = await BlogPosts.findOne({ where: { id },
       attributes: ['id', 'title', 'content', 'userId', 'published', 'updated'],
-      include: [{
-          model: Users, as: 'user', attributes: { exclude: ['password'] }, raw: true,
-        }],
+      include: [
+        { model: Users, as: 'user', attributes: { exclude: ['password'] } },
+        {
+          model: PostsCategories,
+          as: 'categories',
+          attributes: { exclude: ['postId'] },
+          include: [{ model: Categories, as: 'categories' }],
+        },
+      ],
     });
-
-    const postCategories = await PostsCategories.findAll({
-      where: { postId: id },
-      include: { model: Categories, as: 'categories', raw: true },
-    });
-
-    const categories = await postCategories.map((item) => item.categories);
-
-    const response = { ...JSON.parse(JSON.stringify(post)), categories };
+    const response = handleResponse([posts]);
 
     return { code: 200, response };
   } catch ({ message }) {
