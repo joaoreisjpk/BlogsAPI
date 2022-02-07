@@ -69,21 +69,18 @@ const getPostId = async ({ id }) => {
         }],
     });
     if (!posts) return { code: 404, response: { message: 'Post does not exist' } };
-    const response = handleResponse([posts]);
+    const response = handleResponse([posts])[0];
     return { code: 200, response };
   } catch ({ message }) {
     return { code: 401, response: { message } };
   }
 };
 
-const updatePost = async ({ id }) => {
+const updatePost = async ({ id, title, content }) => {
   try {
-    const posts = await BlogPosts.findOne({
-      where: { id },
-      'query'
-    });
-    if (!posts) return { code: 404, response: { message: 'Post does not exist' } };
-    const response = handleResponse([posts]);
+    await BlogPosts.update({ title, content }, { where: { id } });
+    const { response } = await getPostId({ id });
+    
     return { code: 200, response };
   } catch ({ message }) {
     return { code: 401, response: { message } };
