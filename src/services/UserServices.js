@@ -57,4 +57,13 @@ const tokenValidation = async (token) => {
   return { user };
 };
 
-module.exports = { createUser, getUsers, getSpecificUser, tokenValidation };
+const deleteUser = async ({ id }) => {
+  try {
+    await Users.destroy({ where: { id } });
+    
+    return { code: 204 };
+  } catch ({ message }) {
+    return { code: 401, response: { message } };
+  }
+};
+module.exports = { createUser, getUsers, getSpecificUser, tokenValidation, deleteUser };
