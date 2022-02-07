@@ -33,7 +33,11 @@ const getPosts = async () => {
       attributes: ['id', 'title', 'content', 'userId', 'published', 'updated'],
       include: [
         { model: Users, as: 'user', attributes: { exclude: ['password'] } },
-        { model: PostsCategories, as: 'posts' },
+        {
+          model: PostsCategories,
+          as: 'categories',
+          attributes: { exclude: ['postId'] },
+        },
       ],
     });
     console.log(posts);
@@ -43,13 +47,25 @@ const getPosts = async () => {
   }
 };
 
-const getPostId = async (data) => {
-  const post = await BlogPosts.findOne({ where: data, raw: true });
-  if (!post) {
-    return { code: 404, response: { message: 'User does not exist' } };
+const getPostId = async (id) => {
+  try {
+    const posts = await BlogPosts.findAll({
+      attributes: ['id', 'title', 'content', 'userId', 'published', 'updated'],
+      where: { id },
+      include: [
+        { model: Users, as: 'user', attributes: { exclude: ['password'] } },
+        {
+          model: PostsCategories,
+          as: 'categories',
+          attributes: { exclude: ['postId'] },
+        },
+      ],
+    });
+    console.log(posts);
+    return { code: 200, response: posts };
+  } catch ({ message }) {
+    return { code: 401, response: { message } };
   }
-
-  return { code: 200, response: post };
 };
 
 module.exports = { createPost, getPosts, getPostId };
