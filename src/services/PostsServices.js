@@ -71,7 +71,7 @@ const getPostId = async ({ id }) => {
     });
     const response = handleResponse([posts]);
 
-    return { code: 200, response };
+    return { code: 200, response: response[0] };
   } catch ({ message }) {
     return { code: 401, response: { message } };
   }
