@@ -80,24 +80,31 @@ const updatePost = async ({ id, title, content, categoryIds, userId }) => {
   try {
     const { response } = await getPostId({ id });
 
-    Validate.UpdateValidation({ id, categoryIds, title, content, userId });
+    if (response.message) return { code: 404, response: { message: response.message } };
 
-    const post = await BlogPosts.update({ title, content }, { where: { id } });
+    await Validate.UpdateValidation({ id, categoryIds, title, content, userId });
+        
+    await BlogPosts.update({ title, content }, { where: { id } });
 
-    if (!post[0]) return { code: 404, response: { message: 'Post does not exist' } };
-
-    return { code: 200, response };
+    return { code: 200, response: { title, content, userId, categories: response.categories } };
   } catch ({ message }) {
     return { code: 401, response: { message } };
   }
 };
 
-const deletePost = async ({ id }) => {
+const deletePost = async ({ id, userId }) => {
   try {
+    const { response } = await getPostId({ id });
+
+    if (response.message) return { code: 404, response: { message: response.message } };
+
+    if (Number(id) !== userId) {
+      return { code: 401, response: { message: 'Unauthorized user' } };
+    }
+
     const post = await BlogPosts.destroy({ where: { id } });
     
-    console.log(post);
-    if (!post[0]) return { code: 404 };
+    if (!post[0]) return { code: 404, response: { message: 'Post does not exist' } };
     
     return { code: 204 };
   } catch ({ message }) {

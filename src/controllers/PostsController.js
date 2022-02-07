@@ -32,18 +32,25 @@ const getPostId = async (req, resp) => {
 
 const updatePost = async (req, resp) => {
   const { id } = req.params;
-  const { title, content } = req.body;
+  const { title, content, categoryIds } = req.body;
   const { id: userId } = req.user;
 
-  const { code, response } = await postsServices.updatePost({ id, title, content, userId });
+  const { code, response } = await postsServices.updatePost({
+    id,
+    title,
+    content,
+    userId,
+    categoryIds,
+  });
 
   return resp.status(code).json(response);
 };
 
 const deletePost = async (req, resp) => {
   const { id } = req.params;
+  const { id: userId } = req.user;
 
-  const { code, response } = await postsServices.deletePost({ id });
+  const { code, response } = await postsServices.deletePost({ id, userId });
 
   return resp.status(code).json(response);
 };
