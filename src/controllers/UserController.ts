@@ -1,11 +1,13 @@
+import { NextFunction, Request, Response } from "express";
+
 require('dotenv').config();
 const Validate = require('../helpers/Validations');
 
 const usersServices = require('../services/UserServices');
 
-const validateUser = async (req, res, next) => {
+const validateUser = async (req: Request, res: Response, next: NextFunction) => {
   const { displayName, email, password } = req.body;
-  
+
   try {
     Validate.DisplayName(displayName);
     Validate.Email(email);
@@ -16,7 +18,7 @@ const validateUser = async (req, res, next) => {
   }
 };
 
-const createUser = async (req, res) => {
+const createUser = async (req: Request, res: Response) => {
   const { displayName, email, password, image } = req.body;
 
   const { status, response } = await usersServices.createUser({
@@ -29,12 +31,12 @@ const createUser = async (req, res) => {
   return res.status(status).json(response);
 };
 
-const getUsers = async (req, res) => {
+const getUsers = async (req: Request, res: Response) => {
   const { code, response } = await usersServices.getUsers();
   return res.status(code).json(response);
 };
 
-const getUserId = async (req, res) => {
+const getUserId = async (req: Request, res: Response) => {
   const { id } = req.params;
 
   const { code, response } = await usersServices.getSpecificUser({ id });
@@ -42,7 +44,7 @@ const getUserId = async (req, res) => {
   return res.status(code).json(response);
 };
 
-const deleteUser = async (req, res) => {
+const deleteUser = async (req: Request, res: Response) => {
   const { id } = req.user;
 
   const { code, response } = await usersServices.deleteUser({ id });

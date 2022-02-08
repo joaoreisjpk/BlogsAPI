@@ -1,8 +1,9 @@
-require('dotenv').config();
+import { Request, Response } from "express";
+import 'dotenv/config';
 
-const categoriesService = require('../services/CategoriesServices');
+import categoriesService from '../services/CategoriesServices';
 
-const createCategory = async (req, res) => {
+const createCategory = async (req: Request, res: Response) => {
   const { name } = req.body;
 
   if (!name) {
@@ -13,10 +14,10 @@ const createCategory = async (req, res) => {
   return res.status(status).json(response);
 };
 
-const getCategories = async (req, res) => {
+const getCategories = async (req: Request, res: Response) => {
   const { code, response } = await categoriesService.getCategories();
 
   return res.status(code).json(response);
 };
 
-module.exports = { createCategory, getCategories };
+export default { createCategory, getCategories };

@@ -1,9 +1,11 @@
+import { NextFunction, Request, Response } from "express";
+
 require('dotenv').config();
 
 const postsServices = require('../services/PostsServices');
 const Validate = require('../helpers/Validations');
 
-const validateCreate = async (req, res, next) => {
+const validateCreate = async (req: Request, res: Response, next: NextFunction) => {
   const { title, content, categoryIds } = req.body;
 
   try {
@@ -16,7 +18,7 @@ const validateCreate = async (req, res, next) => {
   }
 };
 
-const validateUpdate = async (req, res, next) => {
+const validateUpdate = async (req: Request, res: Response, next: NextFunction) => {
   const { categoryIds, title, content } = req.body;
   try {
     await Validate.UpdateValidation({ categoryIds, title, content });
@@ -26,27 +28,27 @@ const validateUpdate = async (req, res, next) => {
   }
 };
 
-const createPost = async (req, resp) => {
+const createPost = async (req: Request, res: Response) => {
   const { status, response } = await postsServices.createPost({ ...req.body, id: req.user.id });
 
-  return resp.status(status).json(response);
+  return res.status(status).json(response);
 };
 
-const getPosts = async (req, resp) => {
+const getPosts = async (req: Request, res: Response) => {
   const { code, response } = await postsServices.getPosts();
 
-  return resp.status(code).json(response);
+  return res.status(code).json(response);
 };
 
-const getPostId = async (req, resp) => {
+const getPostId = async (req: Request, res: Response) => {
   const { id } = req.params;
 
   const { code, response } = await postsServices.getPostId({ id });
 
-  return resp.status(code).json(response);
+  return res.status(code).json(response);
 };
 
-const updatePost = async (req, resp) => {
+const updatePost = async (req: Request, res: Response) => {
   const { id } = req.params;
   const { id: userId } = req.user;
 
@@ -56,23 +58,23 @@ const updatePost = async (req, resp) => {
     ...req.body,
   });
 
-  return resp.status(code).json(response);
+  return res.status(code).json(response);
 };
 
-const deletePost = async (req, resp) => {
+const deletePost = async (req: Request, res: Response) => {
   const { id } = req.params;
   const { id: userId } = req.user;
 
   const { code, response } = await postsServices.deletePost({ id, userId });
 
-  return resp.status(code).json(response);
+  return res.status(code).json(response);
 };
 
-const queryPosts = async (req, resp) => {
+const queryPosts = async (req: Request, res: Response) => {
   const { q } = req.query;
   const { code, response } = await postsServices.queryPosts(q);
 
-  return resp.status(code).json(response);
+  return res.status(code).json(response);
 };
 
 module.exports = {
