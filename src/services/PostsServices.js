@@ -7,31 +7,22 @@ const {
   Categories,
 } = require('../../models');
 const { handleResponse } = require('../helpers');
-const Validate = require('../helpers/Validations');
 
 const createPost = async ({ id: userId, title, content, categoryIds }) => {
-  try {
-    Validate.Title(title);
-    Validate.Content(content);
-    await Validate.CategoryIds(categoryIds);
+  const post = await BlogPosts.create({
+    userId,
+    title,
+    content,
+    categoryIds,
+  });
 
-    const post = await BlogPosts.create({
-      userId,
-      title,
-      content,
-      categoryIds,
-    });
+  await PostsCategories.bulkCreate(
+    categoryIds.map((categoryId) => ({ categoryId, postId: post.id })),
+  );
 
-    await PostsCategories.bulkCreate(
-      categoryIds.map((categoryId) => ({ categoryId, postId: post.id })),
-    );
+  const data = { id: post.id, userId, title, content };
 
-    const data = { id: post.id, userId, title, content };
-
-    return { status: 201, response: data };
-  } catch ({ message }) {
-    return { status: 400, response: { message } };
-  }
+  return { status: 201, response: data };
 };
 
 const getPosts = async () => {
@@ -71,29 +62,23 @@ const getPostId = async ({ id }) => {
   }
 };
 
-const updatePost = async ({ id, title, content, categoryIds, userId }) => {
-  try {
-    const { response } = await getPostId({ id });
+const updatePost = async ({ id, title, content, userId }) => {
+  const { response, response: { categories } } = await getPostId({ id });
 
-    if (response.message) {
-      return { code: 404, response: { message: response.message } };
-    }
-
-    if (response.userId !== userId) {
-      return { code: 401, response: { message: 'Unauthorized user' } };
-    }
-
-    await Validate.UpdateValidation({ categoryIds, title, content });
-
-    await BlogPosts.update({ title, content }, { where: { id } });
-
-    return {
-      code: 200,
-      response: { title, content, userId, categories: response.categories },
-    };
-  } catch ({ message }) {
-    return { code: 400, response: { message } };
+  if (response.message) {
+    return { code: 404, response: { message: response.message } };
   }
+
+  if (response.userId !== userId) {
+    return { code: 401, response: { message: 'Unauthorized user' } };
+  }
+
+  await BlogPosts.update({ title, content }, { where: { id } });
+
+  return {
+    code: 200,
+    response: { title, content, userId, categories },
+  };
 };
 
 const deletePost = async ({ id, userId }) => {

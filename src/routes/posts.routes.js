@@ -6,12 +6,14 @@ const {
   getPosts,
   queryPosts,
   updatePost,
+  validateCreate,
+  validateUpdate,
 } = require('../controllers/PostsController');
 const { tokenValidation } = require('../controllers/UserController');
 
 const router = Router();
 
-router.post('/', tokenValidation, createPost);
+router.post('/', tokenValidation, validateCreate, createPost);
 
 router.get('/search', tokenValidation, queryPosts);
 
@@ -19,7 +21,7 @@ router.get('/:id', tokenValidation, getPostId);
 
 router.get('/', tokenValidation, getPosts);
 
-router.put('/:id', tokenValidation, updatePost);
+router.put('/:id', tokenValidation, validateUpdate, updatePost);
 
 router.delete('/:id', tokenValidation, deletePost);
 

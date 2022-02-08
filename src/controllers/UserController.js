@@ -1,4 +1,5 @@
 require('dotenv').config();
+const Validate = require('../helpers/Validations');
 
 const usersServices = require('../services/UserServices');
 
@@ -8,10 +9,10 @@ const tokenValidation = async (req, res, next) => {
   try {
     const isNotValid = await usersServices.tokenValidation(authorization);
 
-    if (isNotValid.code) { return res.status(isNotValid.code).json(isNotValid.response); }
-
+    if (isNotValid.code) {
+      return res.status(isNotValid.code).json(isNotValid.response);
+    }
     req.user = isNotValid.user;
-
     next();
   } catch ({ message }) {
     if (message === 'jwt malformed') {
@@ -21,7 +22,20 @@ const tokenValidation = async (req, res, next) => {
   }
 };
 
-const createUser = async (req, resp) => {
+const validateUser = async (req, res, next) => {
+  const { displayName, email, password } = req.body;
+  
+  try {
+    Validate.DisplayName(displayName);
+    Validate.Email(email);
+    Validate.Password(password);
+    next();
+  } catch ({ message }) {
+    return res.status(400).json({ message });
+  }
+};
+
+const createUser = async (req, res) => {
   const { displayName, email, password, image } = req.body;
 
   const { status, response } = await usersServices.createUser({
@@ -31,29 +45,36 @@ const createUser = async (req, resp) => {
     image,
   });
 
-  return resp.status(status).json(response);
+  return res.status(status).json(response);
 };
 
-const getUsers = async (req, resp) => {
+const getUsers = async (req, res) => {
   const { code, response } = await usersServices.getUsers();
 
-  return resp.status(code).json(response);
+  return res.status(code).json(response);
 };
 
-const getUserId = async (req, resp) => {
+const getUserId = async (req, res) => {
   const { id } = req.params;
 
   const { code, response } = await usersServices.getSpecificUser({ id });
 
-  return resp.status(code).json(response);
+  return res.status(code).json(response);
 };
 
-const deleteUser = async (req, resp) => {
+const deleteUser = async (req, res) => {
   const { id } = req.user;
 
   const { code, response } = await usersServices.deleteUser({ id });
 
-  return resp.status(code).json(response);
+  return res.status(code).json(response);
 };
 
-module.exports = { createUser, getUsers, getUserId, tokenValidation, deleteUser };
+module.exports = {
+  createUser,
+  getUsers,
+  getUserId,
+  tokenValidation,
+  deleteUser,
+  validateUser,
+};

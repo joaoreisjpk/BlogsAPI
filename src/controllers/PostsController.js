@@ -1,17 +1,33 @@
 require('dotenv').config();
 
 const postsServices = require('../services/PostsServices');
+const Validate = require('../helpers/Validations');
+
+const validateCreate = async (req, res, next) => {
+  const { title, content, categoryIds } = req.body;
+
+  try {
+    Validate.Title(title);
+    Validate.Content(content);
+    await Validate.CategoryIds(categoryIds);
+    next();
+  } catch ({ message }) {
+    res.status(400).json({ message });
+  }
+};
+
+const validateUpdate = async (req, res, next) => {
+  const { categoryIds, title, content } = req.body;
+  try {
+    await Validate.UpdateValidation({ categoryIds, title, content });
+    next();
+  } catch ({ message }) {
+    res.status(400).json({ message });
+  }
+};
 
 const createPost = async (req, resp) => {
-  const { title, content, categoryIds } = req.body;
-  const { id } = req.user;
-
-  const { status, response } = await postsServices.createPost({
-    id,
-    title,
-    content,
-    categoryIds,
-  });
+  const { status, response } = await postsServices.createPost(req.body);
 
   return resp.status(status).json(response);
 };
@@ -32,15 +48,12 @@ const getPostId = async (req, resp) => {
 
 const updatePost = async (req, resp) => {
   const { id } = req.params;
-  const { title, content, categoryIds } = req.body;
   const { id: userId } = req.user;
 
   const { code, response } = await postsServices.updatePost({
     id,
-    title,
-    content,
     userId,
-    categoryIds,
+    ...req.body,
   });
 
   return resp.status(code).json(response);
@@ -62,4 +75,13 @@ const queryPosts = async (req, resp) => {
   return resp.status(code).json(response);
 };
 
-module.exports = { createPost, getPosts, getPostId, updatePost, deletePost, queryPosts };
+module.exports = {
+  createPost,
+  getPosts,
+  getPostId,
+  updatePost,
+  deletePost,
+  queryPosts,
+  validateCreate,
+  validateUpdate,
+};
