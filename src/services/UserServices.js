@@ -14,7 +14,7 @@ const createUser = async ({ displayName, email, password, image }) => {
 
     return { status: 201, response: { token } };
   } catch (err) {
-    return { status: 409, response: { message: err } };
+    return { status: 409, response: { message: 'User already registered' } };
   }
 };
 
