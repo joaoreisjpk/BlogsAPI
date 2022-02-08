@@ -2,29 +2,21 @@ require('dotenv').config();
 
 const categoriesService = require('../services/CategoriesServices');
 
-const createCategory = async (req, resp) => {
+const createCategory = async (req, res) => {
   const { name } = req.body;
 
+  if (!name) {
+    return res.status(400).json({ message: '"name" is required' });
+  }
   const { status, response } = await categoriesService.createCategory(name);
 
-  return resp.status(status).json(response);
+  return res.status(status).json(response);
 };
 
-const getCategories = async (req, resp) => {
+const getCategories = async (req, res) => {
   const { code, response } = await categoriesService.getCategories();
 
-  return resp.status(code).json(response);
+  return res.status(code).json(response);
 };
-
-/*
-
-const getUserId = async (req, resp) => {
-  const { authorization } = req.headers;
-  const { id } = req.params;
-
-  const { code, response } = await categoriesService.getUserId(authorization, id);
-
-  return resp.status(code).json(response);
-}; */
 
 module.exports = { createCategory, getCategories };

@@ -2,10 +2,6 @@ require('dotenv').config();
 const { Categories } = require('../../models');
 
 const createCategory = async (name) => {
-  if (!name) {
-    return { status: 400, response: { message: '"name" is required' } };
-  }
-
   try {
     const category = await Categories.create({ name });
 
