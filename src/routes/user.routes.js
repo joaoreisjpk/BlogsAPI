@@ -1,10 +1,10 @@
 const { Router } = require('express');
+const { tokenValidation } = require('../controllers/TokenController');
 const {
   createUser,
   deleteUser,
   getUserId,
   getUsers,
-  tokenValidation,
   validateUser,
 } = require('../controllers/UserController');
 

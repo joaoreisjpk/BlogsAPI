@@ -3,11 +3,10 @@ const {
   createCategory,
   getCategories,
 } = require('../controllers/CategoriesController');
-const { tokenValidation } = require('../controllers/UserController');
 
 const router = Router();
 
-router.post('/', tokenValidation, createCategory);
-router.get('/', tokenValidation, getCategories);
+router.post('/', createCategory);
+router.get('/', getCategories);
 
 module.exports = router;
