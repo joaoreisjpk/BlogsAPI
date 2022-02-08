@@ -30,12 +30,11 @@ const getPosts = async () => {
       attributes: ['id', 'title', 'content', 'userId', 'published', 'updated'],
       include: [
         { model: Users, as: 'user', attributes: { exclude: ['password'] } },
-        { model: Categories, as: 'categories' },
+        { model: Categories, as: 'categories', through: { attributes: [] } },
       ],
     });
-    const response = handleResponse(posts);
 
-    return { code: 200, response };
+    return { code: 200, response: posts };
   } catch ({ message }) {
     return { code: 401, response: { message } };
   }
@@ -48,7 +47,7 @@ const getPostId = async ({ id }) => {
       attributes: ['id', 'title', 'content', 'userId', 'published', 'updated'],
       include: [
         { model: Users, as: 'user', attributes: { exclude: ['password'] } },
-        { model: Categories, as: 'categories' },
+        { model: Categories, as: 'categories', through: { attributes: [] } },
       ],
     });
     if (!posts) {
@@ -101,7 +100,7 @@ const deletePost = async ({ id, userId }) => {
 
 const include = [
   { model: Users, as: 'user', attributes: { exclude: ['password'] } },
-  { model: Categories, as: 'categories' },
+  { model: Categories, as: 'categories', through: { attributes: [] } },
 ];
 const queryPosts = async (searchTerm) => {
   try {
