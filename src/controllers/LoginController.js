@@ -1,11 +1,24 @@
 const loginService = require('../services/LoginServices');
+const Validate = require('../helpers/Validations');
 
-const Login = async (req, resp) => {
+const LoginValidation = async (req, res, next) => {
   const { email, password } = req.body;
 
-  const { status, response } = await loginService.Login({ email, password });
-
-  return resp.status(status).json(response);
+  try {
+    Validate.Email(email);
+    Validate.Password(password);
+    next();
+  } catch ({ message }) {
+    return res.status(400).json({ message });
+  }
 };
 
-module.exports = { Login };
+const Login = async (req, res) => {
+    const { email, password } = req.body;
+
+    const { status, response } = await loginService.Login({ email, password });
+
+    return res.status(status).json(response);
+};
+
+module.exports = { Login, LoginValidation };
