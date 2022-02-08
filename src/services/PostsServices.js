@@ -33,6 +33,7 @@ const createPost = async ({ id: userId, title, content, categoryIds }) => {
     return { status: 400, response: { message } };
   }
 };
+
 const getPosts = async () => {
   try {
     const posts = await BlogPosts.findAll({

@@ -1,10 +1,6 @@
-// eslint-disable-next-line max-lines-per-function
 module.exports = (sequelize, _DataTypes) => {
-  const PostsCategories = sequelize.define(
-    'PostsCategories',
-    {},
-    { timestamps: false },
-  );
+  const PostsCategories = sequelize.define('PostsCategories', {},
+    { timestamps: false });
 
   PostsCategories.associate = (models) => {
     models.Categories.belongsToMany(models.BlogPosts, {
