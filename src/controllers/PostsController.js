@@ -27,7 +27,7 @@ const validateUpdate = async (req, res, next) => {
 };
 
 const createPost = async (req, resp) => {
-  const { status, response } = await postsServices.createPost(req.body);
+  const { status, response } = await postsServices.createPost({ ...req.body, id: req.user.id });
 
   return resp.status(status).json(response);
 };

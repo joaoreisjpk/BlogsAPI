@@ -24,7 +24,7 @@ const Email = (email) => {
 };
 
 const Password = (password) => {
-  if (!password && password !== '') throw new Error(noPassword);
+  if (!password && password !== '') throw Error(noPassword);
   if (!password) throw Error(blankPassword);
   if (password.length !== 6) throw Error(invalidPassword);
 };

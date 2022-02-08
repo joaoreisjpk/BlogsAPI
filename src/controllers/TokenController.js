@@ -16,6 +16,7 @@ const tokenValidation = async (req, res, next) => {
     if (code === 404) {
       return res.status(401).json({ message: 'Expirid or invalid token' });
     }
+    console.log(user);
 
     req.user = user;
     next();
