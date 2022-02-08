@@ -31,7 +31,6 @@ const createUser = async (req, res) => {
 
 const getUsers = async (req, res) => {
   const { code, response } = await usersServices.getUsers();
-
   return res.status(code).json(response);
 };
 

@@ -11,9 +11,9 @@ const tokenValidation = async (req, res, next) => {
 
     const { data: email } = jwt.verify(token, secret);
 
-    const { response: user } = usersServices.getSpecificUser({ email });
-
-    if (user.code === 404) {
+    const { response: user, code } = await usersServices.getSpecificUser({ email });
+    console.log(code);
+    if (code === 404) {
       return res.status(401).json({ message: 'Expirid or invalid token' });
     }
 

@@ -9,7 +9,7 @@ const {
   validateCreate,
   validateUpdate,
 } = require('../controllers/PostsController');
-const { tokenValidation } = require('../controllers/UserController');
+const { tokenValidation } = require('../controllers/TokenController');
 
 const router = Router();
 

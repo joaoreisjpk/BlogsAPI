@@ -6,20 +6,6 @@ const secret = process.env.JWT_SECRET;
 
 const jwtConfig = { expiresIn: '1d', algorithm: 'HS256' };
 
-const tokenValidation = async (token) => {
-  if (!token) return { code: 401, response: { message: 'Token not found' } };
-
-  const { data } = jwt.verify(token, secret);
-
-  const user = await Users.findOne({ where: { email: data }, raw: true });
-
-  if (!user) {
-    return { code: 401, response: { message: 'Expirid or invalid token' } };
-  }
-
-  return { user };
-};
-
 const createUser = async ({ displayName, email, password, image }) => {
   try {
     await Users.create({ displayName, email, password, image });
@@ -28,7 +14,7 @@ const createUser = async ({ displayName, email, password, image }) => {
 
     return { status: 201, response: { token } };
   } catch (err) {
-    return { status: 409, response: { message: 'User already registered' } };
+    return { status: 409, response: { message: err } };
   }
 };
 
@@ -42,12 +28,12 @@ const getUsers = async () => {
 };
 
 const getSpecificUser = async (data) => {
-  const users = await Users.findOne({ where: data, raw: true });
+  const user = await Users.findOne({ where: data, raw: true });
 
-  if (!users) {
+  if (!user) {
     return { code: 404, response: { message: 'User does not exist' } };
   }
-  return { code: 200, response: users };
+  return { code: 200, response: user };
 };
 
 const deleteUser = async ({ id }) => {
@@ -64,6 +50,5 @@ module.exports = {
   createUser,
   getUsers,
   getSpecificUser,
-  tokenValidation,
   deleteUser,
 };
