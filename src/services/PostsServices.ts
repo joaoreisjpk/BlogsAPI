@@ -60,7 +60,7 @@ const getPostId = async ({ id }) => {
   }
 };
 
-const updatePost = async ({ id, title, content, userId }) => {
+const updatePost = async ({ id, title, content, userId }: { id: number, title: string, content: string, userId: number}) => {
   const { response, response: { categories } } = await getPostId({ id });
 
   if (response.message) {
@@ -79,7 +79,7 @@ const updatePost = async ({ id, title, content, userId }) => {
   };
 };
 
-const deletePost = async ({ id, userId }) => {
+const deletePost = async ({ id, userId }: { id: number, userId: number }) => {
   try {
     const { response } = await getPostId({ id });
 
@@ -102,7 +102,7 @@ const include = [
   { model: Users, as: 'user', attributes: { exclude: ['password'] } },
   { model: Categories, as: 'categories', through: { attributes: [] } },
 ];
-const queryPosts = async (searchTerm) => {
+const queryPosts = async (searchTerm: { email?: string, id?: string }) => {
   try {
     const posts = await BlogPosts.findAll({
       where: {

@@ -4,7 +4,7 @@ const { Users } = require('../../models');
 const secret = process.env.JWT_SECRET;
 const jwtConfig = { expiresIn: '1d', algorithm: 'HS256' };
 
-const Login = async ({ email }) => {
+const Login = async ({ email }: {email: string}) => {
   const user = await Users.findOne({ where: { email }, raw: true });
 
   if (!user) return { status: 400, response: { message: 'Invalid fields' } };
