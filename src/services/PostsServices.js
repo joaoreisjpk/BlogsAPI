@@ -21,7 +21,6 @@ const createPost = async ({ id: userId, title, content, categoryIds }) => {
   );
 
   const data = { id: post.id, userId, title, content };
-
   return { status: 201, response: data };
 };
 
