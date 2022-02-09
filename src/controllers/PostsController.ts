@@ -1,8 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 
 import 'dotenv/config';
-import { ReqPlusUser } from "../interfaces";
-
 const postsServices = require('../services/PostsServices');
 const Validate = require('../helpers/Validations');
 
@@ -29,8 +27,8 @@ const validateUpdate = async (req: Request, res: Response, next: NextFunction) =
   }
 };
 
-const createPost = async (req: ReqPlusUser, res: Response) => {
-  const { status, response } = await postsServices.createPost({ ...req.body, id: req.user.id });
+const createPost = async (req: Request, res: Response) => {
+  const { status, response } = await postsServices.createPost({ ...req.body, id: req.body.user.id });
 
   return res.status(status).json(response);
 };
@@ -49,9 +47,9 @@ const getPostId = async (req: Request, res: Response) => {
   return res.status(code).json(response);
 };
 
-const updatePost = async (req: ReqPlusUser, res: Response) => {
+const updatePost = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const { id: userId } = req.user;
+  const { id: userId } = req.body.user;
 
   const { code, response } = await postsServices.updatePost({
     id,
@@ -62,9 +60,9 @@ const updatePost = async (req: ReqPlusUser, res: Response) => {
   return res.status(code).json(response);
 };
 
-const deletePost = async (req: ReqPlusUser, res: Response) => {
+const deletePost = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const { id: userId } = req.user;
+  const { id: userId } = req.body.user;
 
   const { code, response } = await postsServices.deletePost({ id, userId });
 

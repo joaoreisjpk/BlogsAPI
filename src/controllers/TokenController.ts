@@ -1,11 +1,10 @@
-import { NextFunction, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
-import { ReqPlusUser } from '../interfaces';
 import * as usersServices from '../services/UserServices';
 
 const secret = process.env.JWT_SECRET || '';
 
-const tokenValidation = async (req: ReqPlusUser, res: Response, next: NextFunction) => {
+const tokenValidation = async (req: Request, res: Response, next: NextFunction) => {
   const { authorization: token } = req.headers;
 
   try {
@@ -24,7 +23,7 @@ const tokenValidation = async (req: ReqPlusUser, res: Response, next: NextFuncti
     }
     console.log(user);
 
-    req.user = user;
+    req.body.user = user;
     next();
   } catch ({ message }) {
     if (message === 'jwt malformed') {
