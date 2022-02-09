@@ -1,7 +1,7 @@
 'use strict';
 
-module.exports = {
-  up: async (queryInterface, Sequelize) => {
+export default {
+  up: async (queryInterface: any, Sequelize: any) => {
     return queryInterface.createTable('PostsCategories', {
       postId: {
         type: Sequelize.INTEGER,
@@ -25,7 +25,7 @@ module.exports = {
       }
     });
   },
-  down: async (queryInterface, _Sequelize) => {
+  down: async (queryInterface: any, _Sequelize: any) => {
     return queryInterface.dropTable('PostsCategories');
   },
 };
