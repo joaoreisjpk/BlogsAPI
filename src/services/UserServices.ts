@@ -46,7 +46,7 @@ const deleteUser = async ({ id }: any) => {
   }
 };
 
-module.exports = {
+export default {
   createUser,
   getUsers,
   getSpecificUser,

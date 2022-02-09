@@ -30,4 +30,4 @@ const tokenValidation = async (req: ReqPlusUser, res: Response, next: NextFuncti
   }
 };
 
-export default { tokenValidation };
+export { tokenValidation };

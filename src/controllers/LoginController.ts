@@ -23,4 +23,4 @@ const Login = async (req: Request, res: Response) => {
     return res.status(status).json(response);
 };
 
-export default { Login, LoginValidation };
+export { Login, LoginValidation };

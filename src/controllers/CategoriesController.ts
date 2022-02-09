@@ -20,4 +20,4 @@ const getCategories = async (req: Request, res: Response) => {
   return res.status(code).json(response);
 };
 
-export default { createCategory, getCategories };
+export { createCategory, getCategories };
