@@ -1,19 +1,17 @@
 'use strict';
+import Categories from './Categories';
+import BlogPosts from './BlogPosts';
+import PostsCategories from './PostsCategories';
+import Users from './Users';
 
-import { dbInterface } from "../src/interfaces";
-
-const fs = require('fs');
-const path = require('path');
 const Sequelize = require('sequelize');
-const basename = path.basename(__filename);
-const env = process.env.NODE_ENV || 'development';
-const config = require(__dirname + './../config/config.js')[env];
+
+const nodeEnv: any = process.env.NODE_ENV || 'development'
+const env: 'development' | 'test' | 'production' = nodeEnv ;
+import configDir from '../config/config';
+
+const config: any = configDir[env];
 const db: any = {};
-
-interface xx {
-  name: 'Categories' | 'PostsCategories' | 'Users' | 'BlogPosts';
-}
-
 let sequelize: any;
 if (config.use_env_variable) {
   sequelize = new Sequelize(process.env[config.use_env_variable], config);
@@ -21,15 +19,10 @@ if (config.use_env_variable) {
   sequelize = new Sequelize(config.database, config.username, config.password, config);
 }
 
-fs
-  .readdirSync(__dirname)
-  .filter((file: any) => {
-    return (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js');
-  })
-  .forEach((file: any) => {
-    const model: any = require(path.join(__dirname, file))(sequelize, Sequelize.DataTypes);
-    db[model.name] = model;
-  });
+db.Categories = Categories(sequelize, Sequelize.DataTypes)
+db.PostsCategories = PostsCategories(sequelize, Sequelize.DataTypes)
+db.BlogPosts = BlogPosts(sequelize, Sequelize.DataTypes)
+db.Users = Users(sequelize, Sequelize.DataTypes)
 
 Object.keys(db).forEach(modelName => {
   if (db[modelName].associate) {

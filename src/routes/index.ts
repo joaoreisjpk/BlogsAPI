@@ -2,11 +2,11 @@ import { Router } from 'express';
 
 const router = Router();
 
-const userRouter = require('./user.routes');
-const loginRouter = require('./login.routes');
-const categorieRouter = require('./categories.routes');
-const postsRouter = require('./posts.routes');
-const { tokenValidation } = require('../controllers/TokenController');
+import userRouter from './user.routes';
+import loginRouter from './login.routes';
+import categorieRouter from './categories.routes';
+import postsRouter from './posts.routes';
+import { tokenValidation } from'../controllers/TokenController';
 
 router.use('/user', userRouter);
 router.use('/login', loginRouter);

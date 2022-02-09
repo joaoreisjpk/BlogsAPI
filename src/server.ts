@@ -1,5 +1,5 @@
-const express = require('express');
-const router = require('./src/routes');
+import express from 'express';
+import router from './routes';
 
 require('dotenv/config');
 
@@ -16,4 +16,4 @@ app.get('/', (request, response) => {
 
 app.listen(3000, () => console.log('ouvindo porta 3000!'));
 
-module.exports = app;
+export default app;

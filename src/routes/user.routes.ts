@@ -15,4 +15,4 @@ router.get('/:id', tokenValidation, getUserId);
 router.get('/', tokenValidation, getUsers);
 router.delete('/me', tokenValidation, deleteUser);
 
-module.exports = router;
+export default router;
