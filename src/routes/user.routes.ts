@@ -1,12 +1,12 @@
-const { Router } = require('express');
-const { tokenValidation } = require('../controllers/TokenController');
-const {
+import { Router } from 'express';
+import { tokenValidation } from '../controllers/TokenController';
+import {
   createUser,
   deleteUser,
   getUserId,
   getUsers,
   validateUser,
-} = require('../controllers/UserController');
+} from '../controllers/UserController';
 
 const router = Router();
 

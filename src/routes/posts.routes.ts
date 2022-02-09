@@ -1,5 +1,5 @@
-const { Router } = require('express');
-const {
+import { Router } from 'express';
+import {
   createPost,
   deletePost,
   getPostId,
@@ -8,8 +8,8 @@ const {
   updatePost,
   validateCreate,
   validateUpdate,
-} = require('../controllers/PostsController');
-const { tokenValidation } = require('../controllers/TokenController');
+} from '../controllers/PostsController';
+import { tokenValidation } from '../controllers/TokenController';
 
 const router = Router();
 

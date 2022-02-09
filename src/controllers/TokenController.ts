@@ -1,5 +1,5 @@
-const jwt = require('jsonwebtoken');
-const usersServices = require('../services/UserServices');
+import * as jwt from 'jsonwebtoken';
+import * as usersServices from '../services/UserServices';
 
 const secret = process.env.JWT_SECRET;
 

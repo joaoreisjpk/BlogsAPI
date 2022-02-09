@@ -1,4 +1,4 @@
-const { Router } = require('express');
+import { Router } from 'express';
 
 const router = Router();
 
@@ -13,4 +13,4 @@ router.use('/login', loginRouter);
 router.use('/categories', tokenValidation, categorieRouter);
 router.use('/post', tokenValidation, postsRouter);
 
-module.exports = router;
+export default router;
