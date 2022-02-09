@@ -1,5 +1,3 @@
-'use strict';
-
 export default {
   up: async (queryInterface: any, Sequelize: any) => {
     return queryInterface.createTable('BlogPosts', {
