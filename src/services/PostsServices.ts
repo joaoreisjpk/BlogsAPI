@@ -60,7 +60,7 @@ const getPostId = async ({ id }) => {
   }
 };
 
-const updatePost = async ({ id, title, content, userId }: { id: number, title: string, content: string, userId: number}) => {
+const updatePost = async ({ id, title, content, userId }: { id: number, title: string, content: string, userId: number }) => {
   const { response, response: { categories } } = await getPostId({ id });
 
   if (response.message) {

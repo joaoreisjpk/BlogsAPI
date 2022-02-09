@@ -11,4 +11,4 @@ function handleResponse(posts) {
   return response;
 }
 
-module.exports = { handleResponse };
+export default { handleResponse }
