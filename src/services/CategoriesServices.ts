@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import db from '../../models';
+import db from '../models';
 
 const createCategory = async (name: string) => {
   try {

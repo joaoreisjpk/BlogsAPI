@@ -11,7 +11,7 @@ const noCategoryIDs = '"categoryIds" is required';
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-import db from '../../models';
+import db from '../models';
 
 const DisplayName = (name: string) => {
   if (!name || name.length < 8) throw Error(nameError);

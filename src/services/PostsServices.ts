@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import { Op } from 'sequelize';
-import db from '../../models';
+import db from '../models';
 import { handleResponse } from '../helpers';
 
 const createPost = async ({ id: userId, title, content, categoryIds }: any) => {

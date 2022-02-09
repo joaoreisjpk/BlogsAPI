@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import db from '../../models';
+import db from '../models';
 
 const secret = process.env.JWT_SECRET || '';
 const jwtConfig: any = { expiresIn: '1d', algorithm: 'HS256' };

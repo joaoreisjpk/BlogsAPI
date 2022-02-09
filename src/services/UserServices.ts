@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import jwt from 'jsonwebtoken';
-import db from '../../models';
+import db from '../models';
 
 const secret = process.env.JWT_SECRET || '';
 
