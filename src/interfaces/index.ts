@@ -21,4 +21,9 @@ interface dbInterface {
   BlogPosts: () => any;
 }
 
-export { UserInterface, ReqPlusUser, dbInterface }
+interface IServices {
+  code: number;
+  response: any;
+}
+
+export { UserInterface, ReqPlusUser, dbInterface, IServices }

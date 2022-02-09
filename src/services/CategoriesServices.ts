@@ -1,17 +1,18 @@
 import 'dotenv/config';
+import { IServices } from '../interfaces';
 import db from '../models';
 
-const createCategory = async (name: string) => {
+const createCategory = async (name: string): Promise<IServices> => {
   try {
     const category = await db.Categories.create({ name });
 
-    return { status: 201, response: category.dataValues };
+    return { code: 201, response: category.dataValues };
   } catch (err) {
-    return { status: 409, response: { message: 'User already registered' } };
+    return { code: 409, response: { message: 'User already registered' } };
   }
 };
 
- const getCategories = async () => {
+ const getCategories = async (): Promise<IServices> => {
   try {
     const categories = await db.Categories.findAll();
     return { code: 200, response: categories };

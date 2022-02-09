@@ -1,21 +1,22 @@
 import { Request, Response } from "express";
 import 'dotenv/config';
 
-import * as categoriesService from '../services/CategoriesServices';
+import * as services from '../services/CategoriesServices';
+import { IServices } from "../interfaces";
 
-const createCategory = async (req: Request, res: Response) => {
-  const { name } = req.body;
+const createCategory = async (req: Request, res: Response): Promise<Response> => {
+  const { name }: { name: string} = req.body;
 
   if (!name) {
     return res.status(400).json({ message: '"name" is required' });
   }
-  const { status, response } = await categoriesService.createCategory(name);
+  const { code, response }: IServices = await services.createCategory(name);
 
-  return res.status(status).json(response);
+  return res.status(code).json(response);
 };
 
-const getCategories = async (req: Request, res: Response) => {
-  const { code, response } = await categoriesService.getCategories();
+const getCategories = async (req: Request, res: Response): Promise<Response> => {
+  const { code, response }: IServices = await services.getCategories();
 
   return res.status(code).json(response);
 };
