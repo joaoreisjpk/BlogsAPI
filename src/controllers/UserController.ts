@@ -1,10 +1,10 @@
 import { NextFunction, Request, Response } from "express";
 import { ReqPlusUser } from "../interfaces";
 
-require('dotenv').config();
-const Validate = require('../helpers/Validations');
+import 'dotenv/config'
+import * as Validate from '../helpers/Validations';
 
-const usersServices = require('../services/UserServices');
+import * as usersServices from '../services/UserServices';
 
 const validateUser = async (req: Request, res: Response, next: NextFunction) => {
   const { displayName, email, password } = req.body;

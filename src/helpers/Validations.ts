@@ -11,7 +11,7 @@ const noCategoryIDs = '"categoryIds" is required';
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-import { Categories } from '../../models';
+import db from '../../models';
 
 const DisplayName = (name: string) => {
   if (!name || name.length < 8) throw Error(nameError);
@@ -40,7 +40,7 @@ const Content = (content: string) => {
 const CategoryIds = async (idsArray: number[]) => {
   if (!idsArray) throw Error(noCategoryIDs);
 
-  const { count } = await Categories.findAndCountAll({
+  const { count } = await db.Categories.findAndCountAll({
     where: { id: idsArray },
     raw: true,
   });
@@ -50,7 +50,7 @@ const CategoryIds = async (idsArray: number[]) => {
   }
 };
 
-const UpdateValidation = async ({ categoryIds, title, content }) => {
+const UpdateValidation = async ({ categoryIds, title, content }: any) => {
   if (categoryIds) throw Error('Categories cannot be edited');
   if (!title) throw Error('"title" is required');
   if (!content) throw Error('"content" is required');

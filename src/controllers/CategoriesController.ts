@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import 'dotenv/config';
 
-import categoriesService from '../services/CategoriesServices';
+import * as categoriesService from '../services/CategoriesServices';
 
 const createCategory = async (req: Request, res: Response) => {
   const { name } = req.body;
