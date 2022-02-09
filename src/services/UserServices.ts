@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import jwt from 'jsonwebtoken';
-import { Users } from '../../models';
+import db from '../../models';
 
 const secret = process.env.JWT_SECRET || '';
 
@@ -8,7 +8,7 @@ const jwtConfig: any = { expiresIn: '1d', algorithm: 'HS256' };
 
 const createUser = async ({ displayName, email, password, image }: any) => {
   try {
-    await Users.create({ displayName, email, password, image });
+    await db.Users.create({ displayName, email, password, image });
 
     const token = jwt.sign({ data: email }, secret, jwtConfig);
 
@@ -20,15 +20,15 @@ const createUser = async ({ displayName, email, password, image }: any) => {
 
 const getUsers = async () => {
   try {
-    const users = await Users.findAll();
+    const users = await db.Users.findAll();
     return { code: 200, response: users };
   } catch ({ message }) {
     return { code: 401, response: { message } };
   }
 };
 
-const getSpecificUser = async (data) => {
-  const user = await Users.findOne({ where: data, raw: true });
+const getSpecificUser = async (data: any) => {
+  const user = await db.Users.findOne({ where: data, raw: true });
 
   if (!user) {
     return { code: 404, response: { message: 'User does not exist' } };
@@ -38,7 +38,7 @@ const getSpecificUser = async (data) => {
 
 const deleteUser = async ({ id }: any) => {
   try {
-    await Users.destroy({ where: { id } });
+    await db.Users.destroy({ where: { id } });
 
     return { code: 204 };
   } catch ({ message }) {
@@ -46,7 +46,7 @@ const deleteUser = async ({ id }: any) => {
   }
 };
 
-export default {
+export {
   createUser,
   getUsers,
   getSpecificUser,

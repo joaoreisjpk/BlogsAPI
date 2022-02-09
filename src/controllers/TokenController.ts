@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express';
+import { NextFunction, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import { ReqPlusUser } from '../interfaces';
 import * as usersServices from '../services/UserServices';
@@ -9,14 +9,18 @@ const tokenValidation = async (req: ReqPlusUser, res: Response, next: NextFuncti
   const { authorization: token } = req.headers;
 
   try {
-    if (!token) return res.status(401).json({ message: 'Token not found' });
+    if (!token) {
+      res.status(401).json({ message: 'Token not found' })
+      return;
+    };
 
     const { data: email }: any = jwt.verify(token, secret);
 
     const { response: user, code } = await usersServices.getSpecificUser({ email });
     console.log(code);
     if (code === 404) {
-      return res.status(401).json({ message: 'Expirid or invalid token' });
+      res.status(401).json({ message: 'Expirid or invalid token' });
+      return;
     }
     console.log(user);
 
@@ -24,9 +28,10 @@ const tokenValidation = async (req: ReqPlusUser, res: Response, next: NextFuncti
     next();
   } catch ({ message }) {
     if (message === 'jwt malformed') {
-      return res.status(401).json({ message: 'Expired or invalid token' });
+      res.status(401).json({ message: 'Expired or invalid token' });
+      return;
     }
-    return res.status(401).json({ message });
+    res.status(401).json({ message });
   }
 };
 

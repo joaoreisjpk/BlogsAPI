@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = {
+export default {
   up: async (queryInterface: any, Sequelize: any) => {
     return queryInterface.createTable('Users', {
       id: {

@@ -11,4 +11,4 @@ function handleResponse(posts: any) {
   return response;
 }
 
-export default { handleResponse }
+export { handleResponse }

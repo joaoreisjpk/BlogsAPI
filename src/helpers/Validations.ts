@@ -56,4 +56,4 @@ const UpdateValidation = async ({ categoryIds, title, content }) => {
   if (!content) throw Error('"content" is required');
 };
 
-export default { DisplayName, Email, Password, Content, Title, CategoryIds, UpdateValidation };
+export { DisplayName, Email, Password, Content, Title, CategoryIds, UpdateValidation };

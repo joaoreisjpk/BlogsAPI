@@ -25,4 +25,4 @@ router.put('/:id', tokenValidation, validateUpdate, updatePost);
 
 router.delete('/:id', tokenValidation, deletePost);
 
-module.exports = router;
+export default router;

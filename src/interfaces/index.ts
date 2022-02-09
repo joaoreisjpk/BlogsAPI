@@ -14,4 +14,11 @@ interface ReqPlusUser extends Request {
   }
 }
 
-export { UserInterface, ReqPlusUser }
+interface dbInterface {
+  Categories: () => any;
+  PostsCategories: () => any;
+  Users: () => any;
+  BlogPosts: () => any;
+}
+
+export { UserInterface, ReqPlusUser, dbInterface }

@@ -1,22 +1,17 @@
 import 'dotenv/config';
 import { Op } from 'sequelize';
-import {
-  BlogPosts,
-  Users,
-  PostsCategories,
-  Categories,
-} from '../../models';
+import db from '../../models';
 import { handleResponse } from '../helpers';
 
 const createPost = async ({ id: userId, title, content, categoryIds }: any) => {
-  const post = await BlogPosts.create({
+  const post = await db.BlogPosts.create({
     userId,
     title,
     content,
     categoryIds,
   });
 
-  await PostsCategories.bulkCreate(
+  await db.PostsCategories.bulkCreate(
     categoryIds.map((categoryId: any) => ({ categoryId, postId: post.id })),
   );
 
@@ -26,11 +21,11 @@ const createPost = async ({ id: userId, title, content, categoryIds }: any) => {
 
 const getPosts = async () => {
   try {
-    const posts = await BlogPosts.findAll({
+    const posts = await db.BlogPosts.findAll({
       attributes: ['id', 'title', 'content', 'userId', 'published', 'updated'],
       include: [
-        { model: Users, as: 'user', attributes: { exclude: ['password'] } },
-        { model: Categories, as: 'categories', through: { attributes: [] } },
+        { model: db.Users, as: 'user', attributes: { exclude: ['password'] } },
+        { model: db.Categories, as: 'categories', through: { attributes: [] } },
       ],
     });
 
@@ -40,14 +35,14 @@ const getPosts = async () => {
   }
 };
 
-const getPostId = async ({ id }) => {
+const getPostId = async ({ id }: any) => {
   try {
-    const posts = await BlogPosts.findOne({
+    const posts = await db.BlogPosts.findOne({
       where: { id },
       attributes: ['id', 'title', 'content', 'userId', 'published', 'updated'],
       include: [
-        { model: Users, as: 'user', attributes: { exclude: ['password'] } },
-        { model: Categories, as: 'categories', through: { attributes: [] } },
+        { model: db.Users, as: 'user', attributes: { exclude: ['password'] } },
+        { model: db.Categories, as: 'categories', through: { attributes: [] } },
       ],
     });
     if (!posts) {
@@ -71,7 +66,7 @@ const updatePost = async ({ id, title, content, userId }: { id: number, title: s
     return { code: 401, response: { message: 'Unauthorized user' } };
   }
 
-  await BlogPosts.update({ title, content }, { where: { id } });
+  await db.BlogPosts.update({ title, content }, { where: { id } });
 
   return {
     code: 200,
@@ -90,7 +85,7 @@ const deletePost = async ({ id, userId }: { id: number, userId: number }) => {
       return { code: 401, response: { message: 'Unauthorized user' } };
     }
 
-    await BlogPosts.destroy({ where: { id } });
+    await db.BlogPosts.destroy({ where: { id } });
 
     return { code: 204 };
   } catch ({ message }) {
@@ -99,12 +94,12 @@ const deletePost = async ({ id, userId }: { id: number, userId: number }) => {
 };
 
 const include = [
-  { model: Users, as: 'user', attributes: { exclude: ['password'] } },
-  { model: Categories, as: 'categories', through: { attributes: [] } },
+  { model: db.Users, as: 'user', attributes: { exclude: ['password'] } },
+  { model: db.Categories, as: 'categories', through: { attributes: [] } },
 ];
 const queryPosts = async (searchTerm: { email?: string, id?: string }) => {
   try {
-    const posts = await BlogPosts.findAll({
+    const posts = await db.BlogPosts.findAll({
       where: {
         [Op.or]: {
           title: { [Op.like]: `%${searchTerm}%` },
@@ -120,7 +115,7 @@ const queryPosts = async (searchTerm: { email?: string, id?: string }) => {
     return { code: 401, response: { message } };
   }
 };
-export default {
+export {
   createPost,
   getPosts,
   getPostId,
