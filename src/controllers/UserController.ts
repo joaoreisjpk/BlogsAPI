@@ -53,7 +53,7 @@ const deleteUser = async (req: ReqPlusUser, res: Response) => {
   return res.status(code).json(response);
 };
 
-module.exports = {
+export default {
   createUser,
   getUsers,
   getUserId,

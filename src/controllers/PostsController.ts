@@ -78,7 +78,7 @@ const queryPosts = async (req: Request, res: Response) => {
   return res.status(code).json(response);
 };
 
-module.exports = {
+export default {
   createPost,
   getPosts,
   getPostId,

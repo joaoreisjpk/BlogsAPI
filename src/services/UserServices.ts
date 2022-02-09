@@ -1,12 +1,12 @@
-require('dotenv').config();
-const jwt = require('jsonwebtoken');
-const { Users } = require('../../models');
+import 'dotenv/config';
+import jwt from 'jsonwebtoken';
+import { Users } from '../../models';
 
-const secret = process.env.JWT_SECRET;
+const secret = process.env.JWT_SECRET || '';
 
-const jwtConfig = { expiresIn: '1d', algorithm: 'HS256' };
+const jwtConfig: any = { expiresIn: '1d', algorithm: 'HS256' };
 
-const createUser = async ({ displayName, email, password, image }) => {
+const createUser = async ({ displayName, email, password, image }: any) => {
   try {
     await Users.create({ displayName, email, password, image });
 
@@ -36,7 +36,7 @@ const getSpecificUser = async (data) => {
   return { code: 200, response: user };
 };
 
-const deleteUser = async ({ id }) => {
+const deleteUser = async ({ id }: any) => {
   try {
     await Users.destroy({ where: { id } });
 

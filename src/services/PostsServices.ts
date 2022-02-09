@@ -1,14 +1,14 @@
-require('dotenv').config();
-const { Op } = require('sequelize');
-const {
+import 'dotenv/config';
+import { Op } from 'sequelize';
+import {
   BlogPosts,
   Users,
   PostsCategories,
   Categories,
-} = require('../../models');
-const { handleResponse } = require('../helpers');
+} from '../../models';
+import { handleResponse } from '../helpers';
 
-const createPost = async ({ id: userId, title, content, categoryIds }) => {
+const createPost = async ({ id: userId, title, content, categoryIds }: any) => {
   const post = await BlogPosts.create({
     userId,
     title,
@@ -120,7 +120,7 @@ const queryPosts = async (searchTerm: { email?: string, id?: string }) => {
     return { code: 401, response: { message } };
   }
 };
-module.exports = {
+export default {
   createPost,
   getPosts,
   getPostId,

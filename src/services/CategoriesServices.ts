@@ -1,5 +1,5 @@
-require('dotenv').config();
-const { Categories } = require('../../models');
+import 'dotenv/config';
+import { Categories } from '../../models';
 
 const createCategory = async (name: string) => {
   try {
@@ -20,4 +20,4 @@ const createCategory = async (name: string) => {
   }
 };
 
-module.exports = { createCategory, getCategories };
+export default { createCategory, getCategories };
