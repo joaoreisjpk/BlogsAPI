@@ -1,4 +1,6 @@
-export default (sequelize: any, _DataTypes: any) => {
+import { DataType, Sequelize } from "sequelize/types";
+
+export default (sequelize: any, _DataTypes: DataType) => {
   const PostsCategories = sequelize.define('PostsCategories', {},
     { timestamps: false });
 

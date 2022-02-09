@@ -23,7 +23,7 @@ interface dbInterface {
 
 interface IServices {
   code: number;
-  response: any;
+  response?: any;
 }
 
 interface IEmailPassword {
@@ -31,4 +31,15 @@ interface IEmailPassword {
   password: string,
 }
 
-export { UserInterface, ReqPlusUser, dbInterface, IServices, IEmailPassword }
+interface IPost {
+  title: string,
+  content: string,
+  categoryIds: number[],
+}
+
+interface IExtendsPost extends IPost {
+  id?: string;
+  userId: string;
+}
+
+export { IPost, UserInterface, ReqPlusUser, dbInterface, IServices, IEmailPassword, IExtendsPost }

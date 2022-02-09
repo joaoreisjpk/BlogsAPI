@@ -2,8 +2,9 @@ import 'dotenv/config';
 import { Op } from 'sequelize';
 import db from '../models';
 import { handleResponse } from '../helpers';
+import { IExtendsPost, IServices } from '../interfaces';
 
-const createPost = async ({ id: userId, title, content, categoryIds }: any) => {
+const createPost = async ({ id: userId, title, content, categoryIds }: IExtendsPost): Promise<IServices> => {
   const post = await db.BlogPosts.create({
     userId,
     title,
@@ -16,10 +17,10 @@ const createPost = async ({ id: userId, title, content, categoryIds }: any) => {
   );
 
   const data = { id: post.id, userId, title, content };
-  return { status: 201, response: data };
+  return { code: 201, response: data };
 };
 
-const getPosts = async () => {
+const getPosts = async (): Promise<IServices> => {
   try {
     const posts = await db.BlogPosts.findAll({
       attributes: ['id', 'title', 'content', 'userId', 'published', 'updated'],
@@ -35,7 +36,7 @@ const getPosts = async () => {
   }
 };
 
-const getPostId = async ({ id }: any) => {
+const getPostId = async ({ id }: any): Promise<IServices> => {
   try {
     const posts = await db.BlogPosts.findOne({
       where: { id },
@@ -55,7 +56,7 @@ const getPostId = async ({ id }: any) => {
   }
 };
 
-const updatePost = async ({ id, title, content, userId }: { id: number, title: string, content: string, userId: number }) => {
+const updatePost = async ({ id, title, content, userId }: IExtendsPost) => {
   const { response, response: { categories } } = await getPostId({ id });
 
   if (response.message) {
