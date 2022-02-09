@@ -1,4 +1,4 @@
-module.exports = (sequelize, DataTypes) => {
+export default (sequelize: any, DataTypes: any) => {
   const Users = sequelize.define(
     'Users',
     {
@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
     },
   );
 
-  Users.associate = (models) => {
+  Users.associate = (models: any) => {
     Users.hasMany(models.BlogPosts, { foreignKey: 'userId', as: 'blogposts' });
   };
   

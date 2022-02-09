@@ -1,4 +1,4 @@
-module.exports = (sequelize, DataTypes) => {
+export default (sequelize: any, DataTypes: any): any => {
   const BlogPosts = sequelize.define('BlogPosts', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     title: DataTypes.STRING,
@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
     userId: DataTypes.INTEGER,
   });
 
-  BlogPosts.associate = (models) => {
+  BlogPosts.associate = (models: any) => {
     BlogPosts.belongsTo(models.Users, { foreignKey: 'userId', as: 'user' });
 
     BlogPosts.hasMany(models.PostsCategories, {
