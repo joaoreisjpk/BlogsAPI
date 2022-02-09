@@ -26,4 +26,9 @@ interface IServices {
   response: any;
 }
 
-export { UserInterface, ReqPlusUser, dbInterface, IServices }
+interface IEmailPassword {
+  email: string,
+  password: string,
+}
+
+export { UserInterface, ReqPlusUser, dbInterface, IServices, IEmailPassword }

@@ -1,9 +1,10 @@
 import { NextFunction, Request, Response } from "express";
+import { IServices } from "../interfaces";
 
-const loginService = require('../services/LoginServices');
-const Validate = require('../helpers/Validations');
+import * as loginService from '../services/LoginServices';
+import * as Validate from '../helpers/Validations';
 
-const LoginValidation = async (req: Request, res: Response, next: NextFunction) => {
+const LoginValidation = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
   const { email, password } = req.body;
 
   try {
@@ -15,12 +16,12 @@ const LoginValidation = async (req: Request, res: Response, next: NextFunction) 
   }
 };
 
-const Login = async (req: Request, res: Response) => {
-    const { email, password } = req.body;
+const Login = async (req: Request, res: Response): Promise<Response> => {
+  const { email }: { email: string } = req.body;
 
-    const { status, response } = await loginService.Login({ email, password });
+  const { code, response }: IServices = await loginService.Login({ email });
 
-    return res.status(status).json(response);
+  return res.status(code).json(response);
 };
 
 export { Login, LoginValidation };
