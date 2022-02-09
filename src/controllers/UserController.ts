@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from "express";
+import { ReqPlusUser } from "../interfaces";
 
 require('dotenv').config();
 const Validate = require('../helpers/Validations');
@@ -44,7 +45,7 @@ const getUserId = async (req: Request, res: Response) => {
   return res.status(code).json(response);
 };
 
-const deleteUser = async (req: Request, res: Response) => {
+const deleteUser = async (req: ReqPlusUser, res: Response) => {
   const { id } = req.user;
 
   const { code, response } = await usersServices.deleteUser({ id });

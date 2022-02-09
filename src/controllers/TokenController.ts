@@ -1,15 +1,17 @@
-import * as jwt from 'jsonwebtoken';
+import { NextFunction, Request, Response } from 'express';
+import jwt from 'jsonwebtoken';
+import { ReqPlusUser } from '../interfaces';
 import * as usersServices from '../services/UserServices';
 
-const secret = process.env.JWT_SECRET;
+const secret = process.env.JWT_SECRET || '';
 
-const tokenValidation = async (req, res, next) => {
+const tokenValidation = async (req: ReqPlusUser, res: Response, next: NextFunction) => {
   const { authorization: token } = req.headers;
 
   try {
     if (!token) return res.status(401).json({ message: 'Token not found' });
 
-    const { data: email } = jwt.verify(token, secret);
+    const { data: email }: any = jwt.verify(token, secret);
 
     const { response: user, code } = await usersServices.getSpecificUser({ email });
     console.log(code);
@@ -28,4 +30,4 @@ const tokenValidation = async (req, res, next) => {
   }
 };
 
-module.exports = { tokenValidation };
+export default { tokenValidation };

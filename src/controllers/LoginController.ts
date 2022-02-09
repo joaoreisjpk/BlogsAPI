@@ -1,7 +1,9 @@
+import { NextFunction, Request, Response } from "express";
+
 const loginService = require('../services/LoginServices');
 const Validate = require('../helpers/Validations');
 
-const LoginValidation = async (req, res, next) => {
+const LoginValidation = async (req: Request, res: Response, next: NextFunction) => {
   const { email, password } = req.body;
 
   try {
@@ -13,7 +15,7 @@ const LoginValidation = async (req, res, next) => {
   }
 };
 
-const Login = async (req, res) => {
+const Login = async (req: Request, res: Response) => {
     const { email, password } = req.body;
 
     const { status, response } = await loginService.Login({ email, password });
@@ -21,4 +23,4 @@ const Login = async (req, res) => {
     return res.status(status).json(response);
 };
 
-module.exports = { Login, LoginValidation };
+export default { Login, LoginValidation };
